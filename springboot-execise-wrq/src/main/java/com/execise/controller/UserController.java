@@ -28,13 +28,17 @@ public class UserController {
     @PostMapping("/user")
     public String addUser(User user, Model model){
         if((user.getId()==null) || (user.getUsername().isEmpty()) || (user.getPassword().isEmpty()) || (user.getPhoneNumber().isEmpty())){
+            //需输入所有属性
             model.addAttribute("msg","Please type in all the information!");
+            return "/add";
+        }else if((userService.queryUserById(user.getId()))!=null){
+            //id不能重复
+            model.addAttribute("msg","ID already exists, please re-enter!");
             return "/add";
         }else{
             userService.addUser(user);
             return "redirect:/users";
         }
-
     }
 
     //查询所有user
@@ -48,9 +52,9 @@ public class UserController {
     //按username查询
     @PostMapping("/queryname")
     public String queryUserByName(String username, Model model){
-        System.out.println(username);
-        User user = userService.queryUserByName(username);
-        model.addAttribute("users",user);
+        //System.out.println(username);
+        List<User> users = userService.queryUserByName(username);
+        model.addAttribute("users",users);
         return "index";
     }
 

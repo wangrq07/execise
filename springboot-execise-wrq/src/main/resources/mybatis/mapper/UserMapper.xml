@@ -16,4 +16,8 @@
         insert into user (id,username,password,phoneNumber) values (#{id},#{username},#{password},#{phoneNumber})
     </insert>
 
+    <select id="queryUserById" resultType="User">
+        select * from user where id = #{id}
+    </select>
+
 </mapper>
